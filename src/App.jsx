@@ -15,6 +15,26 @@ function App() {
     });
     setNewItem("");
   };
+
+  let handleToggle = (id, completed_state) => {
+    setTodos((currentTodos) => {
+      return currentTodos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, completed: completed_state };
+        }
+        return todo;
+      });
+    });
+  };
+
+  let handleDelete = (id) => {
+    setTodos((currentTodos) => {
+      return currentTodos.filter((todo) => {
+        return todo.id !== id;
+      });
+    });
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit} className="new-item-form">
@@ -36,23 +56,24 @@ function App() {
             <>
               <li id={todo.id}>
                 <label>
-                  <input type="checkbox" />
+                  <input
+                    type="checkbox"
+                    onChange={(e) => handleToggle(todo.id, e.target.checked)}
+                    checked={todo.completed}
+                  />
                   {todo.title}{" "}
                 </label>
-                <button className="btn btn-danger">Delete</button>
+                <button
+                  className="btn btn-danger"
+                  onClick={(e) => handleDelete(todo.id)}
+                >
+                  Delete
+                </button>
               </li>
               <br />
             </>
           );
         })}
-
-        <li>
-          <label>
-            <input type="checkbox" />
-            Item 2{" "}
-          </label>
-          <button className="btn btn-danger">Delete</button>
-        </li>
       </ul>
     </>
   );
